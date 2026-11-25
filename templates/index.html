@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSpend AI – Personal Finance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .navbar-custom {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+        }
+        .card-modern {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+            background: #ffffff;
+        }
+        .card-header-income {
+            background-color: #ecfdf5;
+            color: #047857;
+            font-weight: 600;
+            border-bottom: 1px solid #d1fae5;
+            border-radius: 14px 14px 0 0 !important;
+            padding: 0.9rem 1.25rem;
+        }
+        .card-header-expense {
+            background-color: #fff1f2;
+            color: #be123c;
+            font-weight: 600;
+            border-bottom: 1px solid #ffe4e6;
+            border-radius: 14px 14px 0 0 !important;
+            padding: 0.9rem 1.25rem;
+        }
+        .btn-income {
+            background-color: #059669;
+            color: #ffffff;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .btn-income:hover {
+            background-color: #047857;
+            color: #ffffff;
+        }
+        .btn-expense {
+            background-color: #e11d48;
+            color: #ffffff;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .btn-expense:hover {
+            background-color: #be123c;
+            color: #ffffff;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 0.85rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        .table thead th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .badge-income {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 0.45em 0.75em;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .badge-expense {
+            background-color: #ffe4e6;
+            color: #9f1239;
+            padding: 0.45em 0.75em;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .summary-card {
+            border: none;
+            border-radius: 14px;
+            color: #ffffff;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
+        }
+        .bg-income-grad {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+        .bg-expense-grad {
+            background: linear-gradient(135deg, #e11d48, #f43f5e);
+        }
+        .bg-balance-grad {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Navbar -->
+<nav class="navbar navbar-custom mb-4">
+    <div class="container">
+        <span class="navbar-brand text-white fw-bold fs-4 mb-0">
+            SmartSpend <span style="color: #818cf8;">AI</span>
+        </span>
+        <span class="text-light small opacity-75">Personal Financial Planning System</span>
+    </div>
+</nav>
+
+<div class="container pb-5">
+
+    <!-- Welcome Header -->
+    <div class="mb-4">
+        <h4 class="fw-bold mb-1 text-dark">Hi User 👋</h4>
+        <p class="text-muted mb-0">Track your income and expenses to stay on top of your monthly budget.</p>
+    </div>
+
+    <!-- 1. Separate Add Income (Left) & Add Expense (Right) Forms -->
+    <div class="row g-4 mb-4">
+        <!-- Add Income Card -->
+        <div class="col-md-6">
+            <div class="card card-modern h-100">
+                <div class="card-header card-header-income">
+                    Add Income
+                </div>
+                <div class="card-body p-4">
+                    <form action="/add" method="POST" class="row g-3">
+                        <input type="hidden" name="type" value="Income">
+                        <div class="col-12">
+                            <label class="form-label small fw-medium text-muted">Description</label>
+                            <input type="text" name="description" class="form-control" placeholder="e.g., Monthly Salary, Freelance" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-muted">Source</label>
+                            <select name="category" class="form-select" required>
+                                <option value="Salary">Salary</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Allowance">Allowance</option>
+                                <option value="Other Income">Other Income</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-muted">Amount (₹)</label>
+                            <input type="number" step="0.01" name="amount" class="form-control" placeholder="0.00" required>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-income w-100 py-2">Add Income</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Expense Card -->
+        <div class="col-md-6">
+            <div class="card card-modern h-100">
+                <div class="card-header card-header-expense">
+                    Add Expense
+                </div>
+                <div class="card-body p-4">
+                    <form action="/add" method="POST" class="row g-3">
+                        <input type="hidden" name="type" value="Expense">
+                        <div class="col-12">
+                            <label class="form-label small fw-medium text-muted">Description</label>
+                            <input type="text" name="description" class="form-control" placeholder="e.g., Swiggy, Bus Ticket, Rent" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-muted">Category</label>
+                            <select name="category" class="form-select" required>
+                                <option value="Food">Food</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Rent">Rent</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="EMI">EMI</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-muted">Amount (₹)</label>
+                            <input type="number" step="0.01" name="amount" class="form-control" placeholder="0.00" required>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-expense w-100 py-2">Add Expense</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Recent Transactions Table -->
+    <div class="card card-modern mb-4">
+        <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius: 14px 14px 0 0;">
+            <h6 class="mb-0 fw-bold text-dark">Recent Transactions</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Type</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th class="text-end pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in transactions %}
+                        <tr>
+                            <td class="ps-4">
+                                <span class="{{ 'badge-income' if t.type == 'Income' else 'badge-expense' }}">
+                                    {{ t.type }}
+                                </span>
+                            </td>
+                            <td class="fw-medium">{{ t.description }}</td>
+                            <td class="text-muted">{{ t.category }}</td>
+                            <td class="fw-semibold">₹{{ "%.2f"|format(t.amount) }}</td>
+                            <td class="text-end pe-4">
+                                <a href="/delete/{{ t.id }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Delete</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No transactions added yet. Start by adding an income or expense above.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Financial Summary Cards (Bottom) -->
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card summary-card bg-income-grad p-3">
+                <div class="card-body">
+                    <p class="mb-1 small text-white-50 fw-medium">TOTAL INCOME</p>
+                    <h3 class="mb-0 fw-bold">₹{{ "%.2f"|format(total_income) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card summary-card bg-expense-grad p-3">
+                <div class="card-body">
+                    <p class="mb-1 small text-white-50 fw-medium">TOTAL EXPENSE</p>
+                    <h3 class="mb-0 fw-bold">₹{{ "%.2f"|format(total_expense) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card summary-card bg-balance-grad p-3">
+                <div class="card-body">
+                    <p class="mb-1 small text-white-50 fw-medium">REMAINING BALANCE</p>
+                    <h3 class="mb-0 fw-bold">₹{{ "%.2f"|format(balance) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
